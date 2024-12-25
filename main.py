@@ -7,7 +7,7 @@ window = Tk()
 window.title("WhiteBoard")
 
 # Create a var to store a canvas with our window, width, height  and a colour
-canvas = Canvas(window, width = 800, height = 600, bg = 'white')
+canvas = Canvas(window, width = 1800, height = 1000, bg = 'white')
 # Pack our widget 
 canvas.pack()
 
@@ -24,7 +24,6 @@ def startDrawing(actualPosition):
     drawing = True
     lastX = actualPosition.x
     lastY = actualPosition.y
-
 # We are calling a function(startDrawing) when click Button-1
 canvas.bind('<Button-1>', startDrawing)
 
@@ -32,7 +31,6 @@ canvas.bind('<Button-1>', startDrawing)
 def stopDrawing(actualPosition):
     global drawing
     drawing = False
-
 # When we stop clicking Button1
 canvas.bind('<ButtonRelease-1>', stopDrawing)
 
@@ -45,9 +43,16 @@ def draw(actualPosition):
         lineTrack.append(line)
         lastX = actualPosition.x
         lastY = actualPosition.y
-
 # When the mouse is moving
 canvas.bind('<B1-Motion>', draw)
+
+# Function that deletes the last line of the lineTrack
+def deleteLastLine(actualPosition):
+    if lineTrack:
+        canvas.delete(lineTrack.pop())
+# Create a shortcut for CTRL+Z to remove lines, this one will be asociated 
+# to our window and not to our canvas(like previously)
+window.bind('<Control-z>', deleteLastLine)
 
 # Loop our window(method form tkinter library)
 window.mainloop()
